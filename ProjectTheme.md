@@ -2,6 +2,6 @@
 
 ## Theme: Band
 
-Andrea: 
-Clyde:
-Vicky: 
+- Andrea: 
+- Clyde:
+- Vicky: 
