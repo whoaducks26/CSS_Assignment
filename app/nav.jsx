@@ -13,7 +13,7 @@ export default function NavHeader() {
         },
         {
             key: "2",
-            label: <Link href="/upcoming">Upcoming Events</Link>
+            label: <Link href="/upcoming">Events</Link>
         },
         {
             key: "3",

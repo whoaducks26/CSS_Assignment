@@ -1,0 +1,41 @@
+body, .ant-layout {
+    background-color: #121212;
+    color: #fff !important;
+}
+
+.ant-typography,
+.ant-typography p, 
+.ant-typography span,
+.ant-typography ul,
+.ant-typography li {
+    color: #fff !important; /* Force all typography elements to be white */
+}
+
+.ant-menu {
+    background-color: #121212; /* Dark background for the menu */
+    color: #fff !important; /* Ensure the text is white */
+}
+
+.ant-menu-item, .ant-menu-submenu-title {
+    color: #fff !important; /* White text for menu items */
+}
+
+.ant-menu-item:hover {
+    background-color: #333; /* Slightly lighter background on hover */
+}
+
+.ant-menu-item-selected {
+    background-color: #FFD300 !important; /* Highlight selected item with yellow */
+    color: #121212; /* Make selected text dark */
+}
+
+.ant-btn-primary {
+    background-color: #FFD300; /* Yellow button */
+    border-color: #FFD300;
+    color: #121212; /* Black text */
+}
+
+.ant-btn-primary:hover {
+    background-color: #ffcc00; /* Slightly darker yellow on hover */
+    color: #121212; /* Ensure text stays black on hover */
+}
