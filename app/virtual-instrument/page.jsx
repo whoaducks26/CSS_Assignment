@@ -1,3 +1,6 @@
+// Andrea Ng Sze Ying, S10265940B
+// this is a virtual piano instrument that allows users to play notes using their keyboard
+
 "use client";  
 
 import "./instrument.styles.css";  
