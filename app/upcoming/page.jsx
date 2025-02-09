@@ -122,8 +122,10 @@ const EventsPage = () => {
             </div>
 
             <Typography.Text>SYNOPSIS</Typography.Text>
+            <br/>
             <Typography.Text>{selectedEvent.details}</Typography.Text>
-
+            <br/>
+            <br/>
 
             {/* More Details Button */}
             <Button
