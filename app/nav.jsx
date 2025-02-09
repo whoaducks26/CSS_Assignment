@@ -22,14 +22,31 @@ export default function NavHeader() {
     ];
 
     return (
-        <Header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 20px" }}>
-            {/*Top left display name*/}
-            <div style={{ color: "white", fontSize: "20px", fontWeight: "bold" }}>
+        <Header style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "0 20px",
+            backgroundColor: "white", // Light mode
+            borderBottom: "1px solid #ddd"
+        }}>
+            {/* Top left display name */}
+            <div style={{
+                color: "#121212", 
+                fontSize: "20px", 
+                fontWeight: "600", 
+                fontFamily: "'Figtree', sans-serif"
+            }}>
                 <Link href="/">Ngee Ann Concert Band</Link>
             </div>
 
             {/* Menu */}
-            <Menu theme="dark" mode="horizontal" style={{ flex: 1, justifyContent: "flex-end" }} items={menuItems} />
+            <Menu 
+                theme="light" 
+                mode="horizontal" 
+                style={{ flex: 1, justifyContent: "flex-end", fontFamily: "'Figtree', sans-serif" }} 
+                items={menuItems} 
+            />
         </Header>
     );
 }

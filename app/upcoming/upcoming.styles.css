@@ -1,6 +1,12 @@
+/* Cheong Vicky, S10267187G */
+
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@600&display=swap');
+
 body, .ant-layout {
-    background-color: #121212;
+    background-color: white;
     color: #fff !important;
+    font-family: 'Figtree', sans-serif;
+    font-weight: 600;
 }
 
 .ant-typography,
@@ -8,20 +14,26 @@ body, .ant-layout {
 .ant-typography span,
 .ant-typography ul,
 .ant-typography li {
-    color: #fff !important; /* Force all typography elements to be white */
+    color: #333 !important;
+    font-family: 'Figtree', sans-serif;
+    font-weight: 500;
 }
 
 .ant-menu {
-    background-color: #121212; /* Dark background for the menu */
-    color: #fff !important; /* Ensure the text is white */
+    background-color: #fff;
+    color: #333 !important;
+    font-family: 'Figtree', sans-serif;
+    font-weight: 600;
 }
 
 .ant-menu-item, .ant-menu-submenu-title {
-    color: #fff !important; /* White text for menu items */
+    color: #333 !important;
+    font-family: 'Figtree', sans-serif;
+    font-weight: 500;
 }
 
 .ant-menu-item:hover {
-    background-color: #333; /* Slightly lighter background on hover */
+    background-color: #eae8e8;
 }
 
 .ant-menu-item-selected {
@@ -33,6 +45,8 @@ body, .ant-layout {
     background-color: #FFD300; /* Yellow button */
     border-color: #FFD300;
     color: #121212; /* Black text */
+    font-family: 'Figtree', sans-serif;
+    font-weight: 500;
 }
 
 .ant-btn-primary:hover {
