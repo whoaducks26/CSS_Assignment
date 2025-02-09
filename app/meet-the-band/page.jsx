@@ -1,17 +1,14 @@
-"use client"; // This marks the file as a client-side component in Next.js
+"use client";
 
-// Importing necessary hooks from React
 import { useState, useEffect } from "react";
-// Importing the Image component from Next.js for optimized image handling
 import Image from "next/image";
-// Importing external CSS file for styling
 import "./meet.styles.css";
 
-// Main Committee Members
+// main comm
 const mainComm = [
   {
-    name: "Pei Yi", // Name of the member
-    role: "President", // Role in the committee
+    name: "Pei Yi", 
+    role: "President", 
     instaPost: "https://www.instagram.com/p/C84CI51SuB2/?img_index=1",
     instaImage: "https://instagram.fsin15-1.fna.fbcdn.net/v/t51.29350-15/449615305_1157013472200791_735680815204929020_n.jpg?stp=dst-jpg_e35_s720x720_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDE0NDAuc2RyLmYyOTM1MC5kZWZhdWx0X2ltYWdlIn0&_nc_ht=instagram.fsin15-1.fna.fbcdn.net&_nc_cat=111&_nc_oc=Q6cZ2AHxl8zckqZFMhDiPw0KWtG4vKRhy2FFa2qeKMARqk7xsQVsbIo_1Fn2U1zi7kdmAdk&_nc_ohc=H9-Tb6EUPGAQ7kNvgGB9PQe&_nc_gid=39e336c5e59a4e8eb704a5d52cf804e6&edm=APoiHPcBAAAA&ccb=7-5&ig_cache_key=MzQwMjQ3ODkyMDI2NzIxNTI2MA%3D%3D.3-ccb7-5&oh=00_AYCLH_-4DB5G3CAjWm5XuR2Og23mPbgPVR6-WHtu9Tl8jg&oe=67AD371E&_nc_sid=22de04", // Instagram post URL
   },
@@ -35,7 +32,7 @@ const mainComm = [
   },
 ];
 
-// Sub Committee Members
+// sub comm 
 const subComm = [
     {
         name: "Syafiq and Si Xuan",
@@ -63,7 +60,7 @@ const subComm = [
     },
 ]
 
-// Band Sections Data (an array of objects containing band section details)
+// sections
 const bandRow1 = [
   { name: "Flutes", 
     instaPost: "https://www.instagram.com/p/DEj7gCJTk_1/?img_index=1",
@@ -102,7 +99,7 @@ const bandRow2 = [
   },
 ];
 
-//  **MemberCard Component**
+//  member card
 const MemberCard = ({ member, onClick }) => (
   <div className="member-card" onClick={() => onClick(member)}>
     <Image src={member.instaImage} alt={member.name} width={150} height={150} className="member-image" />
@@ -111,7 +108,7 @@ const MemberCard = ({ member, onClick }) => (
   </div>
 );
 
-//  **Meet Component with Modal**
+//  meet component with modal
 export default function Meet() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
@@ -125,19 +122,19 @@ export default function Meet() {
 
   return (
     <div className="meet-container">
-      {/* Main Committee */}
+      {/* main comm */}
       <div className="section">
         <h2>Main Committee</h2>
         <div className="grid">{mainComm.map((member) => <MemberCard key={member.name} member={member} onClick={openModal} />)}</div>
       </div>
 
-      {/* Subcommittee */}
+      {/* sub comm */}
       <div className="section">
         <h2>Subcommittee</h2>
         <div className="grid">{subComm.map((member) => <MemberCard key={member.name} member={member} onClick={openModal} />)}</div>
       </div>
 
-      {/* Band Sections */}
+      {/* sections */}
       <div className="section">
         <h2>Band Sections</h2>
         <div className="band-grid">
@@ -146,7 +143,7 @@ export default function Meet() {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* modal */}
       {modalIsOpen && selectedMember && (
         <div className="modal-overlay">
           <div className="modal-content">
