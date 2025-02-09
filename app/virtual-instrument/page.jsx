@@ -24,7 +24,7 @@ const keyMap = {
 };
 
 export default function Piano() {
-  // useState to manage active (pressed) keys and audio context
+  // use state to manage active (pressed) keys and audio context
   const [activeKeys, setActiveKeys] = useState(new Set());  // track which keys are pressed
   const [audioContext] = useState(new (window.AudioContext || window.webkitAudioContext)());  // create audio context
   const [oscillators, setOscillators] = useState({});  // store oscillators (sounds) for each pressed key
@@ -114,7 +114,7 @@ export default function Piano() {
         <p>Current Octave: {octave}</p>
       </div>
       <div className="piano-keyboard">
-      {/* Render the piano keys */}
+      {/* Render piano keys */}
       {Object.keys(keyMap).map((key) => (
         <div
           key={key}
