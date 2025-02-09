@@ -1,6 +1,6 @@
-// Cheong Vicky, S10267187G
+// Cheong Vicky, S10267187G, P01
 // this page uses the Layout (HeaderSider2) from AntDesign to give a light mode
-// sidebar menu--Upcoming and Previous events. Features a show details/hide
+// sidebar menu--Upcoming and Previous events. features a show details/hide
 // details button to expand the programme setlist.
 
 "use client";
@@ -11,7 +11,7 @@ import './upcoming.styles.css';
 
 const { Sider, Content } = Layout;
 
-// Events data: name, details, date, address, image, past(false) or upcoming(true)
+// events data: name, details, date, address, image, past(false) or upcoming(true)
 const events = [
   {
     id: 1,
@@ -57,15 +57,15 @@ const events = [
   },
 ];
 
-// Events page: AntDesign's layout component
+// events page: AntDesign's layout component
 const EventsPage = () => {
-  const [selectedEvent, setSelectedEvent] = useState(events[0]); // Default to first event
-  const [expanded, setExpanded] = useState(false); // Check if details should be shown or hidden
+  const [selectedEvent, setSelectedEvent] = useState(events[0]); // default to first event
+  const [expanded, setExpanded] = useState(false); // check if details should be shown or hidden
 
   const handleMenuClick = (eventId) => {
     const event = events.find((e) => e.id === eventId);
     setSelectedEvent(event);
-    setExpanded(false); // Reset details so it's not shown when selecting new event
+    setExpanded(false); // reset details so it's not shown when selecting new event
   };
 
   const renderMenuItems = (isUpcoming) => {
@@ -79,7 +79,8 @@ const EventsPage = () => {
 
   return (
     <Layout style={{ height: '100vh', padding: '20px' }}>
-      {/* Side Menu */}
+      
+      {/* side menu */}
       <Sider width={240} theme="light" style={{ padding: '20px' }}>
         <Typography.Title level={4}>
             Upcoming
@@ -100,7 +101,7 @@ const EventsPage = () => {
         />
       </Sider>
 
-      {/* Event Content */}
+      {/* event content */}
       <Content style={{ padding: '20px' }}>
         {selectedEvent && (
           <>
@@ -116,7 +117,7 @@ const EventsPage = () => {
                   width: '80%',
                   height: 'auto',
                   maxHeight: '300px',
-                  objectFit: 'cover',
+                  objectFit: 'contain',
                 }}
               />
             </div>
@@ -127,7 +128,7 @@ const EventsPage = () => {
             <br/>
             <br/>
 
-            {/* More Details Button */}
+            {/* More Details button */}
             <Button
               type="primary"
               onClick={() => setExpanded(!expanded)}
@@ -135,7 +136,7 @@ const EventsPage = () => {
               {expanded ? 'Hide Details' : 'More Details'}
             </Button>
 
-            {/* Expanded Content */}
+            {/* expanded content; programme/setlist */}
             {expanded && (
               <div style={{ marginTop: '20px' }}>
                 <Typography.Text>PROGRAMME</Typography.Text>

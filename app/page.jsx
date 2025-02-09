@@ -14,7 +14,7 @@ export default function HomePage() {
                 <h3>
                     This website is meant as a website for Ngee Ann Polytechnic's Concert Band club, 
                     showcasing the committee members (Meet the Band!), events (Events), and an
-                    interactive keyboard game (Play This!).
+                    interactive keyboard (Play This!).
                 </h3>
                 <h3>Select a page from the menu above.</h3>
             </div>
