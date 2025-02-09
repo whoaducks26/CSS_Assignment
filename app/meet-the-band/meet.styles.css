@@ -1,0 +1,79 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+    position: relative;
+  }
+  
+  .close-btn {
+    margin-top: 15px;
+    padding: 10px;
+    background: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .card {
+    cursor: pointer;
+  }
+  
+  .meet-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .section {
+    width: 100%;
+  }
+  
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .band-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .band-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .member-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 180px;
+    cursor: pointer;
+  }
+  
+  .member-image {
+    border-radius: 50%;
+    object-fit: cover;
+  } 
