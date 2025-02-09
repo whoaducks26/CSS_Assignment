@@ -6,7 +6,7 @@
 import "./instrument.styles.css";  
 import { useState, useEffect } from "react";  
 
-// key to note mapping
+// key to note mapping (ocatve 4)
 const keyMap = {
   a: 261.63, // C4
   w: 277.18, // C#4
@@ -28,12 +28,16 @@ export default function Piano() {
   const [activeKeys, setActiveKeys] = useState(new Set());  // track which keys are pressed
   const [audioContext] = useState(new (window.AudioContext || window.webkitAudioContext)());  // create audio context
   const [oscillators, setOscillators] = useState({});  // store oscillators (sounds) for each pressed key
+  const [octave, setOctave] = useState(4); // set octave
 
   useEffect(() => {
     // key pressed
     const handleKeyDown = (event) => {
-      // check if key pressed corresponds to a note and if its not active
-      if (keyMap[event.key] && !activeKeys.has(event.key)) {
+      if (event.key === "[") {
+        setOctave((prev) => Math.max(1, prev - 1)); // decrease octave by 1
+      } else if (event.key === "]") {
+        setOctave((prev) => Math.min(7, prev + 1)); // increase octave by 1
+      } else if (keyMap[event.key] && !activeKeys.has(event.key)) { // check if key pressed corresponds to a note and if its not active
         setActiveKeys((prev) => new Set(prev).add(event.key));  // add key to active keys
         startNote(event.key);  // start sound for key pressed
       }
@@ -61,7 +65,7 @@ export default function Piano() {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [activeKeys]);  // re-runs the effect if activeKeys changes
+  }, [activeKeys, octave]);  // re-runs the effect if activeKeys changes
 
   // start playing a note
   const startNote = (key) => {
@@ -69,7 +73,8 @@ export default function Piano() {
     if (!oscillators[key]) {
       const oscillator = audioContext.createOscillator();  // create new sound
       const gainNode = audioContext.createGain();  // create a gain node for volume control
-      oscillator.frequency.setValueAtTime(keyMap[key], audioContext.currentTime);  // set sound frequency
+      const frequency = keyMap[key] * Math.pow(2, octave - 4); // modifies the frequency based on the octave
+      oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime); // set sound frequency
       oscillator.connect(gainNode);  // connect sound to gain node
       gainNode.connect(audioContext.destination);  // connect gain node to audio context output
       oscillator.start();  // start sound
@@ -101,7 +106,12 @@ export default function Piano() {
         <p>Use your keyboard to play the piano!
           <br />
           Press the keys shown on your keyboard to play the notes.
+          <br />
+          Press the keys shown to play notes.
+          <br />
+          Press "[" to lower octave by 1, "]" to raise octave by 1.
         </p>
+        <p>Current Octave: {octave}</p>
       </div>
       <div className="piano-keyboard">
       {/* Render the piano keys */}
