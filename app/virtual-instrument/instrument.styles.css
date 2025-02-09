@@ -1,0 +1,71 @@
+/* Container for the piano */
+.piano-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 20px;
+    justify-content: center;
+}
+
+.piano-keyboard {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 4px;
+}
+  
+/* Info section (name and description) */
+.piano-info {
+  text-align: center; 
+  margin-bottom: 20px; 
+}
+
+.piano-info h1 {
+  font-size: 24; 
+  margin: 0;         
+}
+
+.piano-info p {
+  font-size: 16; 
+  color: gray;      
+  margin-top: 5px;   
+}
+
+/* styles for keys */
+.piano-key {
+    width: 40px;
+    height: 160px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 5px;
+    border: 2px solid black;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.1s ease;
+}
+
+/* White keys */
+.white-key {
+    background-color: white;
+    color: black;
+}
+
+/* Black keys */
+.black-key {
+    background-color: black;
+    color: white;
+    height: 100px;
+    margin-left: -20px;
+    margin-right: -20px;
+    z-index: 1;
+    position: relative;
+}
+
+/* Active key when pressed */
+.active {
+  background-color: grey;
+}

@@ -1,115 +1,118 @@
-"use client";
+"use client";  
 
-import React, { useEffect } from "react";
-import styles from './instrument.styles.css'
+import "./instrument.styles.css";  
+import { useState, useEffect } from "react";  
 
-const VirtualInstrument = () => {
-  // Mapping of keyboard keys to their corresponding frequencies (in Hz).
-  const keyMapping = {
-    a: 130.81, // C note (octave 3)
-    s: 146.83, // D note
-    d: 164.81, // E note
-    f: 174.61, // F note
-    g: 196.00, // G note
-    h: 220.00, // A note
-    j: 246.94, // B note
-    k: 261.63  // High C note (C2)
-  };
-
-  // Create a new AudioContext to manage and control audio playback
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-  // Store active oscillators to manage key releases
-  const activeOscillators = {};
-
-  // Function that will generate sound when a key is pressed
-  const playSound = (key) => {
-    const frequency = keyMapping[key];
-
-    if (frequency && !activeOscillators[key]) {
-      // Create an oscillator node to generate sound (Square wave for sharper sound)
-      const oscillator = audioContext.createOscillator();
-      oscillator.type = 'square';  // Using square wave for sharper sound
-      oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);  // Set the frequency of the note
-
-      // Create a gain node to control the volume
-      const gainNode = audioContext.createGain();
-      gainNode.gain.setValueAtTime(1, audioContext.currentTime);  // Full volume, adjust if needed
-
-      // Create a low-pass filter to keep the sound muted but still sharp
-      const lowPassFilter = audioContext.createBiquadFilter();
-      lowPassFilter.type = 'lowpass';  // Low-pass filter to block higher frequencies
-      lowPassFilter.frequency.setValueAtTime(800, audioContext.currentTime);  // Set cutoff frequency higher than before (to allow more high frequencies through)
-
-      // Connect the oscillator to the filter, then the filter to the gain node, and then the gain node to the audio context destination (speakers)
-      oscillator.connect(lowPassFilter);
-      lowPassFilter.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-
-      // Start the oscillator immediately
-      oscillator.start();
-
-      // Store the active oscillator so we can control it later
-      activeOscillators[key] = { oscillator, gainNode, lowPassFilter };
-
-      // Smooth fade-in effect (optional for smoother start)
-      gainNode.gain.linearRampToValueAtTime(1, audioContext.currentTime + 0.1);  // Fade to full volume
-    }
-  };
-
-  // Function that stops the sound when the key is released
-  const stopSound = (key) => {
-    const activeSound = activeOscillators[key];
-
-    if (activeSound) {
-      const { oscillator, gainNode } = activeSound;
-
-      // Fade out the sound more gradually (make fade-out time longer for smoother stop)
-      gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.5);  // Smoother fade-out over 0.5 seconds
-
-      // Stop the oscillator after the fade-out
-      oscillator.stop(audioContext.currentTime + 0.5); // Stop after the fade-out
-
-      // Remove the oscillator from active ones
-      delete activeOscillators[key];
-    }
-  };
-
-  // useEffect hook allows us to set up event listeners after the component mounts
-  useEffect(() => {
-    // Define what happens when a key is pressed
-    const handleKeydown = (event) => {
-      const key = event.key.toLowerCase();
-
-      // Play sound for the key
-      playSound(key);
-    };
-
-    // Define what happens when a key is released
-    const handleKeyup = (event) => {
-      const key = event.key.toLowerCase();
-
-      // Stop sound for the key
-      stopSound(key);
-    };
-
-    // Add event listeners to the window for keydown and keyup events (whenever a key is pressed or released)
-    window.addEventListener("keydown", handleKeydown);
-    window.addEventListener("keyup", handleKeyup);
-
-    // Cleanup: Remove the event listeners when the component is unmounted (important to avoid memory leaks)
-    return () => {
-      window.removeEventListener("keydown", handleKeydown);
-      window.removeEventListener("keyup", handleKeyup);
-    };
-  }, []);  // The empty array [] ensures the effect runs only once when the component mounts
-
-  return (
-    <div>
-      <h1>Virtual Instrument - Press Keys to Play</h1>
-      <p>Use the keys A, S, D, F, G, H, J, K to play trumpet notes.</p>
-    </div>
-  );
+// key to note mapping
+const keyMap = {
+  a: 261.63, // C4
+  w: 277.18, // C#4
+  s: 293.66, // D4
+  e: 311.13, // D#4
+  d: 329.63, // E4
+  f: 349.23, // F4
+  t: 369.99, // F#4
+  g: 392.00, // G4
+  y: 415.30, // G#4
+  h: 440.00, // A4
+  u: 466.16, // A#4
+  j: 493.88, // B4
+  k: 523.25, // C5
 };
 
-export default VirtualInstrument;
+export default function Piano() {
+  // useState to manage active keys and audio context
+  const [activeKeys, setActiveKeys] = useState(new Set());  // track which keys are active
+  const [audioContext] = useState(new (window.AudioContext || window.webkitAudioContext)());  // create audio context
+  const [oscillators, setOscillators] = useState({});  // store oscillators for each active key
+
+  useEffect(() => {
+    // key press
+    const handleKeyDown = (event) => {
+      // check if key pressed corresponds to a note and if its not active
+      if (keyMap[event.key] && !activeKeys.has(event.key)) {
+        setActiveKeys((prev) => new Set(prev).add(event.key));  // add key to active keys
+        startNote(event.key);  // start sound for key pressed
+      }
+    };
+
+    // key release
+    const handleKeyUp = (event) => {
+      // check if the key released corresponds to a note
+      if (keyMap[event.key]) {
+        setActiveKeys((prev) => {
+          const newSet = new Set(prev);  // create new set of active keys from prev set
+          newSet.delete(event.key);  // remove key released from new set
+          return newSet;
+        });
+        stopNote(event.key);  // stop the sound for key released
+      }
+    };
+
+    // event listeners for keydown and keyup events
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
+    // cleanup function to remove event listeners when component is unmounted
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [activeKeys]);  // re-runs the effect if activeKeys changes
+
+  // start playing a note
+  const startNote = (key) => {
+    // check if oscillator for the key doesn't exist
+    if (!oscillators[key]) {
+      const oscillator = audioContext.createOscillator();  // create new oscillator
+      const gainNode = audioContext.createGain();  // create a gain node for volume control
+      oscillator.frequency.setValueAtTime(keyMap[key], audioContext.currentTime);  // set oscillator frequency
+      oscillator.connect(gainNode);  // connect oscillator to gain node
+      gainNode.connect(audioContext.destination);  // connect gain node to audio context output
+      oscillator.start();  // start oscillator (sound starts)
+
+      // store oscillator and gainNode for later to stop the sound
+      setOscillators((prev) => ({ ...prev, [key]: { oscillator, gainNode } }));
+    }
+  };
+
+  // stop playing a note
+  const stopNote = (key) => {
+    // check if oscillator for the key exists
+    if (oscillators[key]) {
+      oscillators[key].oscillator.stop();  // stop oscillator (sound stops)
+      
+      // remove oscillator and gainNode from state
+      setOscillators((prev) => {
+        const newOscillators = { ...prev };
+        delete newOscillators[key];  // delete the key oscillator and gainNode
+        return newOscillators;
+      });
+    }
+  };
+
+  return (
+    <div className="piano-container">
+      <div className="piano-info">
+        <h1>Virtual Piano!</h1>
+        <p>Use your keyboard to play the piano!
+          <br />
+          Press the keys shown on your keyboard to play the notes.
+        </p>
+      </div>
+      <div className="piano-keyboard">
+      {/* Render the piano keys */}
+      {Object.keys(keyMap).map((key) => (
+        <div
+          key={key}
+          className={`piano-key ${
+            ["w", "e", "t", "y", "u"].includes(key) ? "black-key" : "white-key"
+          } ${activeKeys.has(key) ? "active" : ""}`}
+        >
+          {key.toUpperCase()}
+        </div>
+      ))}
+    </div>
+    </div>
+  );
+}
