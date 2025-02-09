@@ -24,13 +24,13 @@ const keyMap = {
 };
 
 export default function Piano() {
-  // useState to manage active keys and audio context
-  const [activeKeys, setActiveKeys] = useState(new Set());  // track which keys are active
+  // useState to manage active (pressed) keys and audio context
+  const [activeKeys, setActiveKeys] = useState(new Set());  // track which keys are pressed
   const [audioContext] = useState(new (window.AudioContext || window.webkitAudioContext)());  // create audio context
-  const [oscillators, setOscillators] = useState({});  // store oscillators for each active key
+  const [oscillators, setOscillators] = useState({});  // store oscillators (sounds) for each pressed key
 
   useEffect(() => {
-    // key press
+    // key pressed
     const handleKeyDown = (event) => {
       // check if key pressed corresponds to a note and if its not active
       if (keyMap[event.key] && !activeKeys.has(event.key)) {
@@ -39,7 +39,7 @@ export default function Piano() {
       }
     };
 
-    // key release
+    // key released
     const handleKeyUp = (event) => {
       // check if the key released corresponds to a note
       if (keyMap[event.key]) {
@@ -52,7 +52,7 @@ export default function Piano() {
       }
     };
 
-    // event listeners for keydown and keyup events
+    // event listeners for key presses and releases
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
 
@@ -65,30 +65,30 @@ export default function Piano() {
 
   // start playing a note
   const startNote = (key) => {
-    // check if oscillator for the key doesn't exist
+    // check if sounds for the key doesn't exist
     if (!oscillators[key]) {
-      const oscillator = audioContext.createOscillator();  // create new oscillator
+      const oscillator = audioContext.createOscillator();  // create new sound
       const gainNode = audioContext.createGain();  // create a gain node for volume control
-      oscillator.frequency.setValueAtTime(keyMap[key], audioContext.currentTime);  // set oscillator frequency
-      oscillator.connect(gainNode);  // connect oscillator to gain node
+      oscillator.frequency.setValueAtTime(keyMap[key], audioContext.currentTime);  // set sound frequency
+      oscillator.connect(gainNode);  // connect sound to gain node
       gainNode.connect(audioContext.destination);  // connect gain node to audio context output
-      oscillator.start();  // start oscillator (sound starts)
+      oscillator.start();  // start sound
 
-      // store oscillator and gainNode for later to stop the sound
+      // store sound and gainNode for later to stop the sound
       setOscillators((prev) => ({ ...prev, [key]: { oscillator, gainNode } }));
     }
   };
 
   // stop playing a note
   const stopNote = (key) => {
-    // check if oscillator for the key exists
+    // check if sound for the key exists
     if (oscillators[key]) {
-      oscillators[key].oscillator.stop();  // stop oscillator (sound stops)
+      oscillators[key].oscillator.stop();  // stop sound
       
-      // remove oscillator and gainNode from state
+      // remove sound and gainNode from state
       setOscillators((prev) => {
         const newOscillators = { ...prev };
-        delete newOscillators[key];  // delete the key oscillator and gainNode
+        delete newOscillators[key];  // delete key sound and gainNode
         return newOscillators;
       });
     }
