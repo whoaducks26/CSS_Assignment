@@ -3,7 +3,7 @@
 // Importing necessary hooks from React
 import { useState, } from "react";
 // Importing the Image component from Next.js for optimized image handling
-
+import Image from "next/image";
 // Importing external CSS file for styling
 import "./meet.styles.css";
 
@@ -105,7 +105,7 @@ const bandRow2 = [
 //  **MemberCard Component**
 const MemberCard = ({ member, onClick }) => (
   <div className="member-card" onClick={() => onClick(member)}>
-    <img src={member.instaImage} alt={member.name} width={150} height={150} className="member-image" />
+    <Image src={member.instaImage} alt={member.name} width={150} height={150} className="member-image" />
     <h3>{member.name}</h3>
     {member.role && <p>{member.role}</p>}
   </div>
@@ -150,7 +150,7 @@ export default function Meet() {
       {modalIsOpen && selectedMember && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <img src={selectedMember.instaImage} alt={selectedMember.name} width={250} height={250} className="modal-img" />
+            <Image src={selectedMember.instaImage} alt={selectedMember.name} width={250} height={250} className="modal-img" />
             <h2>{selectedMember.name}</h2>
             {selectedMember.role && <p>{selectedMember.role}</p>}
             <a href={selectedMember.instaPost} target="_blank" rel="noopener noreferrer" className="insta-link">
