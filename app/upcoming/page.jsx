@@ -1,5 +1,5 @@
 // Cheong Vicky, S10267187G
-// this page uses the Layout (HeaderSider2) from AntDesign to give a dark mode
+// this page uses the Layout (HeaderSider2) from AntDesign to give a light mode
 // sidebar menu--Upcoming and Previous events. Features a show details/hide
 // details button to expand the programme setlist.
 
@@ -16,10 +16,10 @@ const events = [
   {
     id: 1,
     name: "Rondeau XXXVII",
-    details: "NPCB's annual concert, an event where all members, both current and alumni, come together to forge stronger bonds.",
+    details: "It's that time of the year again! NPCB presents to you: Rondeau XXXVII! NPCB's annual concert, an event where all members, both current and alumni, come together to forge stronger bonds.",
     date: "SAT, 25 JAN 2025, 5.30PM",
     address: "MUSIC BOX, NGEE ANN POLYTECHNIC",
-    image: "https://connectnpedu-my.sharepoint.com/personal/s10255990_connect_np_edu_sg/Documents/NP%20Concert%20Band%20x%20NPPC/20250125-DSC08693-Enhanced-NR.jpg",
+    image: "/images/Rondeau pic 1.jpg",
     isUpcoming: false,
     programme: [
         "Philip Sparke — Invictus (The Unconquered)",
@@ -29,11 +29,25 @@ const events = [
   },
   {
     id: 2,
+    name: "Open House 2025",
+    details: "Pull out your cameras, it's official that NPCB will be performing at this year's NP Open House '25! \nWatch as we perform familiar tunes, new and old, beloved by all!",
+    date: "SAT, 11 JAN 2025, 3.30PM",
+    address: "ATRIUM, NGEE ANN POLYTECHNIC",
+    image: "/images/Rondeau pic 2.jpg",
+    isUpcoming: false,
+    programme: [
+      "Jay Chou — Best of Jay Chou",
+      "Taylor Swift — Taylor Swift Classics",
+      "Rose, Bruno Mars — APT"
+    ]
+  },
+  {
+    id: 3,
     name: "CCA Fiesta",
     details: "Learn more about NPCB at our booth in the atrium, including details as to signing up for our tune-in and registration!",
-    date: "April 2025, TBC",
+    date: "APRIL 2025, TBC",
     address: "ATRIUM, NGEE ANN POLYTECHNIC",
-    image: "https://instagram.fsin16-1.fna.fbcdn.net/v/t51.29350-15/439101566_2434116830310462_2540005088402249343_n.jpg?stp=dst-jpg_e35_s1080x1080_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDE0NDAuc2RyLmYyOTM1MC5kZWZhdWx0X2ltYWdlIn0&_nc_ht=instagram.fsin16-1.fna.fbcdn.net&_nc_cat=106&_nc_oc=Q6cZ2AE21wrlKuvDBPiPSAhxygp3hpRJobzJGQUkXPHqEKVvnUQhrGjp-GYiJN022UsReEc&_nc_ohc=bqo9qlzH_IkQ7kNvgGtxOzp&_nc_gid=c154ef8ab80e41cba5b5048935041ff2&edm=APoiHPcBAAAA&ccb=7-5&ig_cache_key=MzM0OTY2NjEyNzE5Nzk1MTY4MQ%3D%3D.3-ccb7-5&oh=00_AYC-L_J4xTx8sFwwfDXNiW-SRvbuuoU1Nm231rLcz4nUpg&oe=67AE3BF8&_nc_sid=22de04",
+    image: "/images/Rondeau Poster.jpg",
     isUpcoming: true,
     programme: [
         "Sign Up",
@@ -94,7 +108,7 @@ const EventsPage = () => {
             <Typography.Text>{selectedEvent.date}</Typography.Text>
             <br />
             <Typography.Text>{selectedEvent.address}</Typography.Text>
-            <div style={{ margin: '20px 0', textAlign: 'center' }}>
+            <div style={{ margin: '20px 0', textAlign: 'left' }}>
               <img
                 src={selectedEvent.image}
                 alt={selectedEvent.name}
@@ -108,7 +122,8 @@ const EventsPage = () => {
             </div>
 
             <Typography.Text>SYNOPSIS</Typography.Text>
-            <Typography.Paragraph style={{ marginTop: '5px' }}>{selectedEvent.details}</Typography.Paragraph>
+            <Typography.Text>{selectedEvent.details}</Typography.Text>
+
 
             {/* More Details Button */}
             <Button
