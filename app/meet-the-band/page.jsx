@@ -64,7 +64,7 @@ const subComm = [
 ]
 
 // Band Sections Data (an array of objects containing band section details)
-const bandSections = [
+const bandRow1 = [
   { name: "Flutes", 
     instaPost: "https://www.instagram.com/p/DEj7gCJTk_1/?img_index=1",
     instaImage: "https://instagram.fsin15-1.fna.fbcdn.net/v/t51.29350-15/473175776_3841834322741348_8827110004119080995_n.jpg?stp=dst-jpg_e35_s720x720_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xMDAweDEwMDAuc2RyLmYyOTM1MC5kZWZhdWx0X2ltYWdlIn0&_nc_ht=instagram.fsin15-1.fna.fbcdn.net&_nc_cat=108&_nc_oc=Q6cZ2AHIaUVLG1byeS8Si6JKhgF3pJd-6OT6QIiOEG5YpU2eUQxhCjDIhGYK8ceCqbCeiPk&_nc_ohc=rqgMdoPeShcQ7kNvgFq4eV4&_nc_gid=f5110e4ec8c74722a6d36871b44e6ed9&edm=APoiHPcBAAAA&ccb=7-5&ig_cache_key=MzU0MDkzNTQwOTg2ODMyNzA3OQ%3D%3D.3-ccb7-5&oh=00_AYA1UDFG4NKtcDe5Mbn8drvop3OgY7TWUkc43f89MC9ilg&oe=67AD2510&_nc_sid=22de04" 
@@ -81,6 +81,9 @@ const bandSections = [
     instaPost: "https://www.instagram.com/p/DEnGQ_KzCW2/?img_index=1",
     instaImage: "https://instagram.fsin15-1.fna.fbcdn.net/v/t51.29350-15/473034983_601258925818430_3006168407822460782_n.jpg?stp=dst-jpg_e35_s720x720_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xMDAweDEwMDAuc2RyLmYyOTM1MC5kZWZhdWx0X2ltYWdlIn0&_nc_ht=instagram.fsin15-1.fna.fbcdn.net&_nc_cat=102&_nc_oc=Q6cZ2AHIaUVLG1byeS8Si6JKhgF3pJd-6OT6QIiOEG5YpU2eUQxhCjDIhGYK8ceCqbCeiPk&_nc_ohc=IhA5nLbTnjEQ7kNvgHtZB_v&_nc_gid=f5110e4ec8c74722a6d36871b44e6ed9&edm=APoiHPcBAAAA&ccb=7-5&ig_cache_key=MzU0MTgyNzE3NTMxMjIwNDg0Mw%3D%3D.3-ccb7-5&oh=00_AYCaBm_BWaMdj0Yr4J_Q5Je0Uvr6EZmQ6OvNlgPiY1h6Hg&oe=67AD40F9&_nc_sid=22de04" 
   },
+]
+
+const bandRow2 = [
   { name: "Trombones", 
     instaPost: "https://www.instagram.com/p/DEreMbhzvYk/?img_index=1",
     instaImage: "https://instagram.fsin15-1.fna.fbcdn.net/v/t51.29350-15/473430757_441770592349633_9020276656270032809_n.jpg?stp=dst-jpg_e35_s720x720_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xMDAweDEwMDAuc2RyLmYyOTM1MC5kZWZhdWx0X2ltYWdlIn0&_nc_ht=instagram.fsin15-1.fna.fbcdn.net&_nc_cat=101&_nc_oc=Q6cZ2AHIaUVLG1byeS8Si6JKhgF3pJd-6OT6QIiOEG5YpU2eUQxhCjDIhGYK8ceCqbCeiPk&_nc_ohc=IGbYbC9T9oQQ7kNvgHDgum1&_nc_gid=f5110e4ec8c74722a6d36871b44e6ed9&edm=APoiHPcBAAAA&ccb=7-5&ig_cache_key=MzU0MzA1ODMxOTMwNzIxMzAwOQ%3D%3D.3-ccb7-5&oh=00_AYBFh829YbnWYZcBo116WoZh-wjhHZzwFxdWWogegJHPMg&oe=67AD4453&_nc_sid=22de04" 
@@ -99,138 +102,61 @@ const bandSections = [
   },
 ];
 
-// Main functional component for displaying committee and section information
-export default function MeetTheCommittee() {
-  // Defining state variables
-  const [modalIsOpen, setModalIsOpen] = useState(false); // Tracks whether the modal is open
-  const [selectedMember, setSelectedMember] = useState(null); // Tracks the selected committee member or section
-  const [images, setImages] = useState({}); // Holds the images for members and sections
+//  **MemberCard Component**
+const MemberCard = ({ member, onClick }) => (
+  <div className="member-card" onClick={() => onClick(member)}>
+    <Image src={member.instaImage} alt={member.name} width={150} height={150} className="member-image" />
+    <h3>{member.name}</h3>
+    {member.role && <p>{member.role}</p>}
+  </div>
+);
 
-  // Effect hook to fetch Instagram images when the component mounts
-  useEffect(() => {
-    const fetchInstagramImages = async () => {
-      const updatedImages = {}; // Object to store images for each member/section
-      const allMembers = [...mainComm, ...subComm, ...bandSections]; // Combining committee members and band sections
+//  **Meet Component with Modal**
+export default function Meet() {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null);
 
-      // Looping through all members and sections to fetch their Instagram images
-      for (const member of allMembers) {
-        try {
-          const postId = member.instaPost.split("/p/")[1]?.split("/")[0]; // Extracting post ID from the Instagram URL
-          if (!postId) continue; // If post ID doesn't exist, skip
+  const openModal = (member) => {
+    setSelectedMember(member);
+    setModalIsOpen(true);
+  };
 
-          // Constructing the image URL for the Instagram post
-          const imageUrl = member.instaImage;
-          updatedImages[member.name] = imageUrl; // Storing the image URL in the updatedImages object
-        } catch (error) {
-          console.error("Error fetching image:", error); // Logging any errors
-        }
-      }
-      setImages(updatedImages); // Updating the state with the fetched images
-    };
+  const closeModal = () => setModalIsOpen(false);
 
-    fetchInstagramImages(); // Calling the fetch function
-  }, []); // Empty dependency array means this runs once when the component mounts
-
-  // JSX to render the component
   return (
-    <div className="container">
-      {/* Title of the page */}
-      <h1 className="title">Meet the Committee</h1>
-
-      {/* Committee Members Section */}
-      <div className="grid-layout">
-        {/* Mapping over the commMembers array to create a card for each member */}
-        {mainComm.map((member, index) => (
-          <div
-            key={index} // Each card gets a unique key
-            className="card" // Applying styling for the card
-            onClick={() => {
-              setSelectedMember(member); // Setting the selected member
-              setModalIsOpen(true); // Opening the modal
-            }}
-          >
-            {/* Displaying the member's image */}
-            <Image
-              src={images[member.name] || "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"} // If image exists, use it; otherwise, use a default image
-              alt={member.name} // Alt text for the image
-              width={200} // Image width
-              height={200} // Image height
-              className="card-img" // Styling class for the image
-            />
-            <h2 className="card-name">{member.name}</h2> {/* Displaying the member's name */}
-            <p className="card-role">{member.role}</p> {/* Displaying the member's role */}
-          </div>
-        ))}
-
-        {subComm.map((member, index) => (
-          <div
-            key={index} // Each card gets a unique key
-            className="card" // Applying styling for the card
-            onClick={() => {
-              setSelectedMember(member); // Setting the selected member
-              setModalIsOpen(true); // Opening the modal
-            }}
-          >
-            {/* Displaying the member's image */}
-            <Image
-              src={images[member.name] || "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"} // If image exists, use it; otherwise, use a default image
-              alt={member.name} // Alt text for the image
-              width={200} // Image width
-              height={200} // Image height
-              className="card-img" // Styling class for the image
-            />
-            <h2 className="card-name">{member.name}</h2> {/* Displaying the member's name */}
-            <p className="card-role">{member.role}</p> {/* Displaying the member's role */}
-          </div>
-        ))} 
+    <div className="meet-container">
+      {/* Main Committee */}
+      <div className="section">
+        <h2>Main Committee</h2>
+        <div className="grid">{mainComm.map((member) => <MemberCard key={member.name} member={member} onClick={openModal} />)}</div>
       </div>
 
-      {/* Band Sections Title */}
-      <h2 className="subtitle">Meet the Sections</h2>
-      {/* Mapping over the bandSections array to create a card for each section */}
-      <div className="grid-layout">
-        {bandSections.map((section, index) => (
-          <div
-            key={index} // Each card gets a unique key
-            className="card" // Applying styling for the card
-            onClick={() => {
-              setSelectedMember(section); // Setting the selected section
-              setModalIsOpen(true); // Opening the modal
-            }}
-          >
-            {/* Displaying the section's image */}
-            <Image
-              src={images[section.name] || "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"} // If image exists, use it; otherwise, use a default image
-              alt={section.name} // Alt text for the image
-              width={200} // Image width
-              height={200} // Image height
-              className="card-img" // Styling class for the image
-            />
-            <h2 className="card-name">{section.name}</h2> {/* Displaying the section's name */}
-          </div>
-        ))}
+      {/* Subcommittee */}
+      <div className="section">
+        <h2>Subcommittee</h2>
+        <div className="grid">{subComm.map((member) => <MemberCard key={member.name} member={member} onClick={openModal} />)}</div>
       </div>
 
-      {/* Modal for displaying selected member or section details */}
+      {/* Band Sections */}
+      <div className="section">
+        <h2>Band Sections</h2>
+        <div className="band-grid">
+          <div className="band-row">{bandRow1.map((section) => <MemberCard key={section.name} member={section} onClick={openModal} />)}</div>
+          <div className="band-row">{bandRow2.map((section) => <MemberCard key={section.name} member={section} onClick={openModal} />)}</div>
+        </div>
+      </div>
+
+      {/* Modal */}
       {modalIsOpen && selectedMember && (
-        <div className="modal-overlay"> {/* Overlay for modal background */}
-          <div className="modal-content"> {/* Content of the modal */}
-            {/* Displaying the image of the selected member or section */}
-            <Image
-              src={images[selectedMember.name] || "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"} // If image exists, use it; otherwise, use a default image
-              alt={selectedMember.name} // Alt text for the image
-              width={250} // Image width
-              height={250} // Image height
-              className="modal-img" // Styling class for the modal image
-            />
-            <h2 className="modal-name">{selectedMember.name}</h2> {/* Displaying the name in the modal */}
-            {selectedMember.role && <p className="modal-role">{selectedMember.role}</p>} {/* Displaying the role if it exists */}
-            {/* Link to the Instagram post */}
-            <a href={selectedMember.instaPost} target="_blank" className="insta-link">
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <Image src={selectedMember.instaImage} alt={selectedMember.name} width={250} height={250} className="modal-img" />
+            <h2>{selectedMember.name}</h2>
+            {selectedMember.role && <p>{selectedMember.role}</p>}
+            <a href={selectedMember.instaPost} target="_blank" rel="noopener noreferrer" className="insta-link">
               View on Instagram
             </a>
-            {/* Button to close the modal */}
-            <button className="close-btn" onClick={() => setModalIsOpen(false)}>Close</button>
+            <button className="close-btn" onClick={closeModal}>Close</button>
           </div>
         </div>
       )}
